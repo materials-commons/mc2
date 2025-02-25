@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Native\Laravel\Facades\Menu;
 use Native\Laravel\Facades\MenuBar;
 use Native\Laravel\Facades\Window;
@@ -15,16 +17,30 @@ class NativeAppServiceProvider implements ProvidesPhpIni
      */
     public function boot(): void
     {
+        $projects = $this->getProjects();
+        $projectMenus = [];
+        foreach ($projects as $project) {
+            $projectMenus[] = Menu::label("{$project->name} ({$project->owner->name})");
+        }
         MenuBar::create()
                ->icon(storage_path("app/menuBarIconTemplate.png"))
                ->withContextMenu(Menu::make(
                    Menu::label("About"),
-                   Menu::make(
-                       Menu::label("Project 1"),
-                       Menu::label("Project 2"),
-                   )->label("Projects"),
+                   Menu::make(...$projectMenus)->label("Projects"),
                ))
                ->onlyShowContextMenu();
+    }
+
+    private function getProjects()
+    {
+        $apiUrl = config('mc.url');
+        $resp = Http::withToken(config('user.token'))
+                    ->get("{$apiUrl}/projects");
+        if ($resp->ok()) {
+            return $resp->object()->data;
+        }
+
+        return [];
     }
 
     /**
