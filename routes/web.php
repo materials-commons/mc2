@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\Web\Projects\ShowProjectWebController;
+use App\Livewire\Projects\ShowProject;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('projects/{id}', ShowProject::class)->name('show-project');
 
 Route::middleware([
     'auth:sanctum',

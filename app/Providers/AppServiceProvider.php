@@ -2,9 +2,12 @@
 
 namespace App\Providers;
 
+use App\Events\ProjectClicked;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Http;
+use Native\Laravel\Facades\Window;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,5 +43,12 @@ class AppServiceProvider extends ServiceProvider
                 config(['mc.url' => 'https://materialscommons.org/api']);
             }
         }
+
+        Event::listen(function (ProjectClicked $event): void {
+            ray("ProjectClicked", $event);
+            $id = $event->item["id"];
+            Window::open("project-{$id}")
+                  ->route('show-project', [$id]);
+        });
     }
 }
