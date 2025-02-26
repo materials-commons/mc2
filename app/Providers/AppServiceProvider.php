@@ -47,7 +47,11 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(function (ProjectClicked $event): void {
             ray("ProjectClicked", $event);
             $id = $event->item["id"];
+            $label = $event->item["label"];
             Window::open("project-{$id}")
+                  ->title($label)
+                  ->width(800)
+                  ->height(500)
                   ->route('show-project', [$id]);
         });
     }

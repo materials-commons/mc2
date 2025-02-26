@@ -31,6 +31,7 @@ class NativeAppServiceProvider implements ProvidesPhpIni
                    Menu::label("About"),
                    Menu::make(...$projectMenus)->label("Projects"),
                ))
+               ->showDockIcon(true)
                ->onlyShowContextMenu();
     }
 

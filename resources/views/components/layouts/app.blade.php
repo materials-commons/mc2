@@ -7,10 +7,9 @@
     <title>{{ $title ?? 'Page Title' }}</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600&display=swap" rel="stylesheet"/>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-{{--    @fluxAppearance--}}
+    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen bg-white dark:bg-zinc-800">
+<body class="container-fluid">
 {{ $slot }}
 @fluxScripts
 </body>
