@@ -17,3 +17,41 @@ body {
     //font-family: sans-serif;
     background-color: #fff;
 }
+
+.btn {
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.card-header {
+    padding: 0.5rem 1.25rem;
+    background-color: $blue-4;
+}
+
+.card-header h5 {
+    margin-bottom: 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #f2f2f2;
+}
+
+.card-header h4 {
+    margin-bottom: 0;
+    font-size: 1.35rem;
+    font-weight: bold;
+    color: #f2f2f2;
+}
+
+.card-header a.action-link {
+    color: #ededed;
+}
+
+.card-header a.action-link:hover {
+    //color: $grey-6;
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+

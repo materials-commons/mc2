@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Projects;
 
+use App\Models\LocalProject;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -9,12 +10,17 @@ use Native\Laravel\Dialog;
 use Native\Laravel\Facades\Shell;
 use function config;
 
-class ShowProject extends Component
+class ShowRemoteProject extends Component
 {
-
+    public $localProject;
     public $project;
     public $directory;
     public $filesToDownload;
+    public $markdown = <<<'END'
+# Hello there
+- item 1
+- item 2
+END;
 
     public function mount($id)
     {
@@ -25,6 +31,8 @@ class ShowProject extends Component
         if ($resp->ok()) {
             $this->project = $resp->object()->data;
         }
+
+        $this->localProject = LocalProject::where('remote_id', $id)->first();
     }
 
     public function openProjectOnMC()
@@ -86,15 +94,37 @@ class ShowProject extends Component
 
     public function uploadDirectories()
     {
-        $directories = Dialog::new()
-                             ->title("Select Directories To Upload")
-                             ->folders()
-                             ->open();
-        ray("directories = ", $directories);
+        $dir = Dialog::new()
+                     ->title("Select Directories To Upload")
+                     ->folders()
+                     ->open();
+        ray("directories = ", $dir);
+    }
+
+    public function setLocalDir()
+    {
+        $dir = Dialog::new()
+                     ->title("Select Directories To Upload")
+                     ->folders()
+                     ->open();
+        if (is_null($dir)) {
+            return;
+        }
+
+        $this->localProject = LocalProject::create([
+            'name'       => $this->project->name,
+            'remote_id'  => $this->project->id,
+            'local_path' => $dir,
+        ]);
+    }
+
+    public function openLocalProjectDir()
+    {
+        Shell::showInFolder($this->localProject->local_path);
     }
 
     public function render()
     {
-        return view('livewire.projects.show-project');
+        return view('livewire.projects.show-remote-project');
     }
 }

@@ -11,6 +11,5 @@
 </head>
 <body class="container-fluid">
 {{ $slot }}
-@fluxScripts
 </body>
 </html>
