@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Projects;
 
+use App\Jobs\Projects\DownloadFileJob;
+use App\Jobs\Projects\UploadFileJob;
 use App\Models\LocalProject;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 use Livewire\Component;
 use Native\Laravel\Dialog;
 use Native\Laravel\Facades\Shell;
@@ -54,15 +55,10 @@ END;
                     ]);
         if ($resp->ok()) {
             $dir = $resp->object()->data;
-            $mcUrl = config('mc.url');
-            $url = "{$mcUrl}/projects/{$this->project->id}/files/{$dir->id}/upload";
             foreach ($files as $file) {
-                $resp = Http::withToken(config('user.token'))
-                            ->attach('files[]', file_get_contents($file), basename($file))
-                            ->post($url);
+                UploadFileJob::dispatch($this->project, $dir, $file);
             }
         }
-        ray("upload files to {$this->directory}, files = ", $files);
     }
 
     public function downloadFiles()
@@ -73,20 +69,9 @@ END;
                      ->folders()
                      ->open();
 
-        $mcUrl = config('mc.url');
         foreach ($files as $file) {
             $trimmed = trim($file);
-            $resp = Http::withToken(config('user.token'))
-                        ->post("{$mcUrl}/files/by_path", [
-                            'project_id' => $this->project->id,
-                            'path'       => $trimmed,
-                        ]);
-            if ($resp->ok()) {
-                $f = $resp->object()->data;
-                $resp = Http::withToken(config('user.token'))
-                            ->sink("{$dir}/{$f->name}")
-                            ->get("{$mcUrl}/projects/{$this->project->id}/files/{$f->id}/download");
-            }
+            DownloadFileJob::dispatch($this->project, $dir, $trimmed);
         }
 
         $this->filesToDownload = '';
