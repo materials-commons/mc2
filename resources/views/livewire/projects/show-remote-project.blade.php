@@ -34,13 +34,16 @@
         <x-slot:body>
             <x-projects.show-details :remote-project="$project" :local-project="$localProject"/>
             <div class="mt-4">
-                <button wire:click="openProjectOnMC" class="btn btn-primary">Goto Project On Materials Commons</button>
+{{--                <button wire:click="openProjectOnMC" class="btn btn-primary">Goto Project On Materials Commons</button>--}}
                 <button data-bs-toggle="modal" data-bs-target="#upload-files" class="btn btn-primary">Upload Files
                 </button>
                 <button wire:click="uploadDirectories" class="btn btn-primary">Upload Directory</button>
                 <button data-bs-toggle="modal" data-bs-target="#download-files" class="btn btn-primary">Download Files
                 </button>
-                <button data-bs-toggle="modal" data-bs-target="#not-implemented" class="btn btn-primary">Sync</button>
+                <button data-bs-toggle="modal" data-bs-target="#not-implemented" class="btn btn-primary">
+                    Download Directories
+                </button>
+{{--                <button data-bs-toggle="modal" data-bs-target="#not-implemented" class="btn btn-primary">Sync</button>--}}
             </div>
 
             <div class="flex flex-col mt-4" wire:ignore>
@@ -54,7 +57,7 @@
         const editor = new window.Editor({
             el: document.querySelector('#editor'),
             plugins: [window.chart],
-            height: '600px',
+            height: '400px',
             initialEditType: 'wysiwyg',
             initialValue: {!! json_encode($markdown)!!},
         });

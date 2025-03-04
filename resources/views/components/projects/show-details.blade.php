@@ -9,6 +9,9 @@
             <div>
                 <span class="me-2">Project Only on Materials Commons</span>
                 <a href="#" wire:click.prevent="setLocalDir">Set Local Directory For Project</a>
+                <a href="#" wire:click="openProjectOnMC" class="float-end no-underline">
+                    Open Project on Materials Commons <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
             </div>
         </div>
     @elseif(is_null($remoteProject))
@@ -27,6 +30,9 @@
             <div class="col mb-2">
                 <span class="me-2">Project Directory: {{$localProject->local_path}} </span>
                 <a href="#" wire:click.prevent="openLocalProjectDir">Open</a>
+                <a href="#" wire:click="openProjectOnMC" class="float-end no-underline">
+                    Open Project on Materials Commons <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
             </div>
         </div>
     @endif

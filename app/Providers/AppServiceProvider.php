@@ -50,8 +50,8 @@ class AppServiceProvider extends ServiceProvider
             $label = $event->item["label"];
             Window::open("project-{$id}")
                   ->title($label)
-                  ->width(1150)
-                  ->height(600)
+                  ->width(1000)
+                  ->height(700)
                   ->route('show-remote-project', [$id]);
         });
     }
