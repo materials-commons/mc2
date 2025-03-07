@@ -47,7 +47,7 @@
             </div>
 
             <div class="flex flex-col mt-4" wire:ignore>
-                <label for="editor">Notes</label>
+                <label for="editor">Description</label>
                 <div id="editor"></div>
             </div>
         </x-slot:body>
